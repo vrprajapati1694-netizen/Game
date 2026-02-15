@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ઘન પ્રવાહી વાયુ - Touch Drag Game</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f3;
+    text-align: center;
+}
+
+h1 { color: #2c3e50; }
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.box {
+    width: 30%;
+    min-height: 220px;
+    background: #fff;
+    border: 2px dashed #2980b9;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.item {
+    padding: 12px;
+    margin: 8px;
+    background: #e67e22;
+    color: white;
+    border-radius: 8px;
+    display: inline-block;
+    font-size: 18px;
+    touch-action: none;
+}
+
+.score {
+    font-size: 22px;
+    margin: 15px;
+    color: green;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎮 ઘન - પ્રવાહી - વાયુ</h1>
+<div class="score">માર્ક: <span id="score">0</span></div>
+
+<div class="container">
+    <div class="box" data-type="solid"><b>ઘન</b></div>
+    <div class="box" data-type="liquid"><b>પ્રવાહી</b></div>
+    <div class="box" data-type="gas"><b>વાયુ</b></div>
+</div>
+
+<div id="items">
+    <div class="item" data-type="solid">પથ્થર</div>
+    <div class="item" data-type="liquid">પાણી</div>
+    <div class="item" data-type="gas">હવા</div>
+    <div class="item" data-type="solid">બરફ</div>
+    <div class="item" data-type="liquid">દૂધ</div>
+    <div class="item" data-type="gas">ઓક્સિજન</div>
+</div>
+
+<script>
+let score = 0;
+let draggedItem = null;
+
+document.querySelectorAll('.item').forEach(item => {
+    item.addEventListener('pointerdown', e => {
+        draggedItem = item;
+        item.style.opacity = '0.5';
+    });
+
+    item.addEventListener('pointerup', e => {
+        item.style.opacity = '1';
+    });
+});
+
+document.querySelectorAll('.box').forEach(box => {
+    box.addEventListener('pointerup', e => {
+        if (!draggedItem) return;
+
+        if (draggedItem.dataset.type === box.dataset.type) {
+            box.appendChild(draggedItem);
+            score += 5;
+            document.getElementById('score').innerText = score;
+            draggedItem.style.background = '#27ae60';
+            draggedItem = null;
+        } else {
+            alert("❌ ખોટો જવાબ! ફરી પ્રયત્ન કરો.");
+            draggedItem.style.opacity = '1';
+            draggedItem = null;
+        }
+    });
+});
+</script>
+
+</body>
+</html>
